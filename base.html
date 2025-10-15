@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preetham Challa — Data Engineer</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="base.css" />
+    <script>
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    </script>
+  </head>
+  <body>
+    <!-- ============== Nav ============== -->
+    <header class="nav">
+      <div class="container nav__inner">
+        <div class="brand"><a href="#home">Preetham Challa</a></div>
+
+        <nav class="nav__links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#my-projects">My Projects</a>
+          <a href="#contact">Contact</a>
+
+          <button
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Toggle dark mode"
+            aria-pressed="false"
+            title="Toggle theme"
+          >
+            <span
+              class="theme-toggle__icon theme-toggle__icon--sun"
+              aria-hidden="true"
+              >☀️</span
+            >
+            <span
+              class="theme-toggle__icon theme-toggle__icon--moon"
+              aria-hidden="true"
+              >🌙</span
+            >
+          </button>
+
+          <button
+            class="hamburger-toggle"
+            id="hamburger"
+            aria-label="Menu"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <span class="bar"></span>
+          </button>
+        </nav>
+
+        <nav class="mobile-nav" id="mobile-nav" hidden>
+          <ul>
+            <li><a href="#home" data-close-drawer>Home</a></li>
+            <li><a href="#about" data-close-drawer>About</a></li>
+            <li><a href="#skills" data-close-drawer>Skills</a></li>
+            <li><a href="#experience" data-close-drawer>Experience</a></li>
+            <li><a href="#my-projects" data-close-drawer>My Projects</a></li>
+            <li><a href="#contact" data-close-drawer>Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="nav-spacer"></div>
+
+    <!-- ============== Hero ============== -->
+    <section class="hero" id="home" aria-label="Intro">
+      <div class="hero__bg">
+        <div class="blob blob--a"></div>
+        <div class="blob blob--b"></div>
+      </div>
+
+      <div class="container hero__inner">
+        <div class="hero__avatar" aria-hidden="true">
+          <div class="avatar-3d">
+            <video
+              id="avatarAnim"
+              class="avatar-media"
+              playsinline
+              autoplay
+              muted
+              preload="auto"
+            >
+              <source src="files/intro.webm" type="video/webm" />
+              <source src="files/intro.mp4" type="video/mp4" />
+            </video>
+            <img
+              id="avatarStatic"
+              class="avatar-media is-static"
+              src="files/image.JPG"
+              alt="Preetham Reddy Challa portrait"
+            />
+          </div>
+        </div>
+
+        <span class="chip">Welcome to my portfolio</span>
+        <h1 class="hero__title">Data Engineer</h1>
+        <p class="hero__subtitle">
+          I design and ship scalable data platforms and analytics pipelines
+          across cloud and big-data stacks — turning raw data into reliable,
+          actionable insight.
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn" href="#my-projects">View My Work</a>
+          <a class="btn btn--ghost" href="#contact">Get In Touch</a>
+        </div>
+
+        <div class="hero__social">
+          <a class="pill" href="mailto:preethamch1503@gmail.com">Email</a>
+          <a class="pill" href="#contact">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== About ============== -->
+    <section id="about" class="section section--tint">
+      <div class="container narrow">
+        <h2 class="h2 center">About Me</h2>
+        <p class="lead center">
+          Data Engineer with 5 years in financial and healthcare domains,
+          specializing in cloud-native ETL/ELT, big-data processing, and
+          analytics enablement across AWS, Azure, and modern warehouse
+          ecosystems.
+        </p>
+
+        <div class="grid grid--3">
+          <article class="card">
+            <div class="card__icon">⟡</div>
+            <h3 class="h3">Clean, Reliable Pipelines</h3>
+            <p>
+              Built and operated scalable batch & streaming pipelines with
+              PySpark, Kafka/Beam, and Airflow/Snowflake, with strong testing &
+              CI/CD.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card__icon">✧</div>
+            <h3 class="h3">Cloud First</h3>
+            <p>
+              Hands-on across AWS (S3, Glue, Lambda, EMR, Athena) and Azure
+              (ADF, Databricks, Synapse), with security & governance baked in.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card__icon">⚡</div>
+            <h3 class="h3">Business Impact</h3>
+            <p>
+              Delivered dashboards and automated workflows that cut cycle times
+              and improved stakeholder visibility.
+            </p>
+          </article>
+        </div>
+
+        <div class="resume-highlights">
+          <section class="cred-section">
+            <h4 class="h4">Certifications</h4>
+            <div class="cred-grid">
+              <a
+                class="cred-card"
+                href="https://aws.amazon.com/verification"
+                target="_blank"
+                rel="noopener"
+              >
+                <figure class="cred-media">
+                  <img src="files/aws.png" alt="AWS badge" />
+                </figure>
+                <div class="cred-body">
+                  <p class="cred-title">
+                    AWS Certified Data Engineer – Associate
+                  </p>
+                  <p class="cred-meta">Amazon Web Services · 2024–2028</p>
+                </div>
+                <span class="cred-cta">View</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="cred-section">
+            <h4 class="h4">Education</h4>
+            <div class="cred-grid">
+              <div class="cred-card">
+                <figure class="cred-media">
+                  <img src="files/logo.jpeg" alt="UCM logo" />
+                </figure>
+                <div class="cred-body">
+                  <p class="cred-title">M.S. in Computer Science</p>
+                  <p class="cred-meta">University of Central Missouri</p>
+                </div>
+                <span class="cred-cta">2023–2024</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== Skills (scrolling headings + expanding panels) ============== -->
+    <section id="skills" class="section">
+      <div class="container narrow">
+        <h2 class="h2 center">Skills &amp; Expertise</h2>
+        <p class="lead center">
+          Technologies and tools I use to build robust data platforms.
+        </p>
+
+        <!-- Scrolling category headings -->
+        <div class="skill-headings-marquee" aria-label="Skill Categories">
+          <div class="skill-headings-track" id="skillHeadingsTrack">
+            <button class="skill-head btn-pill" data-cat="languages">
+              Programming Languages
+            </button>
+            <button class="skill-head btn-pill" data-cat="bigdata">
+              Big Data & Processing
+            </button>
+            <button class="skill-head btn-pill" data-cat="cloud">
+              Cloud Platforms
+            </button>
+            <button class="skill-head btn-pill" data-cat="stores">
+              Data Stores
+            </button>
+            <button class="skill-head btn-pill" data-cat="bi">
+              Analytics & BI
+            </button>
+            <button class="skill-head btn-pill" data-cat="ops">
+              Ops & Delivery
+            </button>
+          </div>
+        </div>
+
+        <!-- Expandable panels -->
+        <div class="skills-accordion">
+          <div class="skill-panel" data-panel="languages" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Programming Languages</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="Python"
+                  ><span>Python</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Java"
+                  ><span>Java</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="JavaScript"
+                  ><span>JavaScript</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Scala"
+                  ><span>Scala</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-panel" data-panel="bigdata" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Big Data & Processing</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="PySpark"
+                  ><span>PySpark</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Spark"
+                  ><span>Apache Spark</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Kafka"
+                  ><span>Kafka</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Delta Lake"
+                  ><span>Delta Lake</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Beam"
+                  ><span>Apache Beam</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-panel" data-panel="cloud" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Cloud Platforms</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="AWS"
+                  ><span>AWS</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Azure"
+                  ><span>Azure</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="GCP"
+                  ><span>GCP</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Snowflake"
+                  ><span>Snowflake</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Databricks"
+                  ><span>Databricks</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-panel" data-panel="stores" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Data Stores</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="PostgreSQL"
+                  ><span>PostgreSQL</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="MySQL"
+                  ><span>MySQL</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="MongoDB"
+                  ><span>MongoDB</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Cassandra"
+                  ><span>Cassandra</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-panel" data-panel="bi" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Analytics &amp; BI</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="Power BI"
+                  ><span>Power BI</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Tableau"
+                  ><span>Tableau</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Looker"
+                  ><span>Looker</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-panel" data-panel="ops" aria-hidden="true">
+            <div class="skill-panel__inner">
+              <h3 class="h3 panel-title">Ops &amp; Delivery</h3>
+              <div class="skill-logo-row">
+                <a class="skill-pill" href="#skills" data-skill="Airflow"
+                  ><span>Airflow</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Kubernetes"
+                  ><span>Kubernetes</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="Git"
+                  ><span>Git / CI-CD</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="REST"
+                  ><span>REST</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="JSON"
+                  ><span>JSON</span></a
+                >
+                <a class="skill-pill" href="#skills" data-skill="XML"
+                  ><span>XML</span></a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div id="skillDetails" class="skill-details" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== Experience ============== -->
+    <section id="experience" class="section section--tint">
+      <div class="container">
+        <h2 class="h2 center">Featured Experience</h2>
+        <p class="lead center">Highlights from recent clients.</p>
+
+        <div class="cards">
+          <article class="card card--tall">
+            <div class="card__media" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3 class="h3">
+                UnitedHealth Group — Data Engineer (Jul 2024–Present · Texas)
+              </h3>
+              <p class="muted">
+                Azure + Snowflake + Airflow for secure healthcare analytics.
+              </p>
+              <ul class="ticks">
+                <li>
+                  Integrated on-prem & cloud sources; designed robust ELT for
+                  analytics/reporting.
+                </li>
+                <li>
+                  Implemented masking/de-identification; enforced policy-aligned
+                  data security.
+                </li>
+                <li>
+                  Built Snowflake pipelines & Airflow DAGs; automated
+                  ingestion/cleansing.
+                </li>
+                <li>
+                  Delivered dashboards that improved stakeholder visibility.
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card card--tall">
+            <div class="card__media card__media--alt" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3 class="h3">
+                Verizon — Data Engineer (Aug 2023–May 2024 · Missouri)
+              </h3>
+              <p class="muted">
+                Real-time streaming + large-scale ETL (PySpark, Beam, Kafka).
+              </p>
+              <ul class="ticks">
+                <li>
+                  Optimized PySpark pipelines; cut peak ETL runtime by ~30%.
+                </li>
+                <li>Prepared validated datasets for ML/GenAI initiatives.</li>
+                <li>
+                  Automated CI/CD with Jenkins/GitLab; improved delivery
+                  velocity.
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card card--tall">
+            <div
+              class="card__media card__media--accent"
+              aria-hidden="true"
+            ></div>
+            <div class="card__body">
+              <h3 class="h3">
+                Starbucks — Data Engineer (May 2021–Dec 2022 · Hyderabad)
+              </h3>
+              <p class="muted">
+                Databricks/Spark SQL pipelines for financial transactions &
+                insights.
+              </p>
+              <ul class="ticks">
+                <li>
+                  Built Azure ingestion + Spark transformations across diverse
+                  formats.
+                </li>
+                <li>
+                  Implemented encryption/access controls for sensitive data.
+                </li>
+                <li>
+                  Reduced reporting time by ~20% via automated dashboards.
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card card--tall">
+            <div class="card__media card__media--soft" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3 class="h3">
+                Novartis — Associate Delivery Specialist (Apr 2020–Apr 2021 ·
+                Hyderabad)
+              </h3>
+              <p class="muted">
+                ETL workflows for healthcare/clinical datasets; full SDLC.
+              </p>
+              <ul class="ticks">
+                <li>
+                  Lowered backup failure rates by ~15% with proactive
+                  maintenance.
+                </li>
+                <li>Improved incident resolution time by ~20%.</li>
+                <li>Executed Agile delivery with tight constraints.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== My Projects ============== -->
+    <section id="my-projects" class="section">
+      <div class="container">
+        <h2 class="h2 center">My Projects</h2>
+        <p class="lead center">
+          A few personal builds and open-source contributions.
+        </p>
+
+        <div class="project-cards">
+          <article
+            class="project-card"
+            data-href="https://github.com/preetham15/webpage_cons.git"
+            aria-label="Open project on GitHub"
+            tabindex="0"
+            role="link"
+          >
+            <div class="project-card__head">
+              <h3 class="h3">Basic webpage Design</h3>
+              <span class="project-tag">HTML · CSS · Flask · JavaScript</span>
+            </div>
+            <p class="muted">
+              Subscription plan, DB connections, login/logout functions, and
+              more.
+            </p>
+          </article>
+
+          <article
+            class="project-card"
+            data-href="https://github.com"
+            aria-label="Open project on GitHub"
+            tabindex="0"
+            role="link"
+          >
+            <div class="project-card__head">
+              <h3 class="h3">Portfolio Website</h3>
+              <span class="project-tag">HTML · CSS · Vanilla JS</span>
+            </div>
+            <p class="muted">
+              This site — smooth interactions, dark mode, and resume modal.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== Contact ============== -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="h2 center">Get In Touch</h2>
+        <p class="lead center">
+          Have a project in mind? Let’s create something impactful.
+        </p>
+
+        <div class="contact">
+          <div class="contact__card">
+            <h3 class="h3">Contact Information</h3>
+            <ul class="contact__list">
+              <li>
+                <div class="contact__icon">✉</div>
+                <div>
+                  <p class="muted small">Email</p>
+                  <p>
+                    <a href="mailto:preethamch1503@gmail.com"
+                      >preethamch1503@gmail.com</a
+                    >
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div class="contact__icon">📍</div>
+                <div>
+                  <p class="muted small">Location</p>
+                  <p>Texas, USA</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <form class="contact__form" onsubmit="return false;">
+            <label class="label" for="name">Name</label>
+            <input id="name" class="input" placeholder="Your name" />
+
+            <label class="label" for="email">Email</label>
+            <input
+              id="email"
+              class="input"
+              type="email"
+              placeholder="your.email@example.com"
+            />
+
+            <label class="label" for="message">Message</label>
+            <textarea
+              id="message"
+              class="textarea"
+              rows="6"
+              placeholder="Tell me about your project..."
+            ></textarea>
+
+            <button class="btn btn--full" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container center">© 2025 Portfolio. All rights reserved.</div>
+    </footer>
+
+    <!-- ============== Scripts ============== -->
+    <script>
+      /* Stronger: always start at hero */
+      (function ensureHeroOnLoad() {
+        const goTop = () => {
+          if (location.hash)
+            history.replaceState(null, "", location.pathname + location.search);
+          requestAnimationFrame(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+            document
+              .getElementById("home")
+              ?.scrollIntoView({ behavior: "auto", block: "start" });
+          });
+        };
+        if ("scrollRestoration" in history)
+          history.scrollRestoration = "manual";
+        addEventListener("load", () => setTimeout(goTop, 0));
+        addEventListener("pageshow", () => setTimeout(goTop, 0));
+      })();
+
+      /* Theme toggle */
+      (function themeInit() {
+        const root = document.documentElement;
+        const saved = localStorage.getItem("theme");
+        const mql = matchMedia("(prefers-color-scheme: dark)");
+        function apply(mode) {
+          root.classList.remove("dark");
+          if (mode === "dark" || (mode === "system" && mql.matches))
+            root.classList.add("dark");
+          document
+            .getElementById("themeToggle")
+            ?.setAttribute(
+              "aria-pressed",
+              root.classList.contains("dark") ? "true" : "false"
+            );
+        }
+        apply(saved || "system");
+        try {
+          mql.addEventListener(
+            "change",
+            () =>
+              (localStorage.getItem("theme") || "system") === "system" &&
+              apply("system")
+          );
+        } catch (e) {}
+        document
+          .getElementById("themeToggle")
+          ?.addEventListener("click", () => {
+            const next = root.classList.contains("dark") ? "light" : "dark";
+            localStorage.setItem("theme", next);
+            apply(next);
+          });
+      })();
+
+      /* Hamburger / mobile drawer */
+      (function mobileMenu() {
+        const btn = document.getElementById("hamburger");
+        const drawer = document.getElementById("mobile-nav");
+        if (!btn || !drawer) return;
+
+        function open() {
+          drawer.hidden = false;
+          drawer.classList.add("is-open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+        function close() {
+          drawer.classList.remove("is-open");
+          btn.setAttribute("aria-expanded", "false");
+          setTimeout(() => (drawer.hidden = true), 200);
+        }
+        function toggle() {
+          drawer.classList.contains("is-open") ? close() : open();
+        }
+
+        btn.addEventListener("click", toggle);
+        drawer
+          .querySelectorAll("[data-close-drawer]")
+          .forEach((a) => a.addEventListener("click", close));
+        addEventListener("resize", () => {
+          if (innerWidth > 768 && drawer.classList.contains("is-open")) close();
+        });
+      })();
+
+      /* Avatar: settle to static if video ends/fails */
+      (function avatarSwap() {
+        const root = document.querySelector(".hero__avatar");
+        const video = document.getElementById("avatarAnim");
+        const img = document.getElementById("avatarStatic");
+        if (!root || !img) return;
+        const prefersReduced = matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        function settle() {
+          root.classList.add("hero__avatar--settled");
+          if (video) {
+            try {
+              video.pause();
+            } catch (_) {}
+            video.classList.add("avatar-vid-hidden");
+            video.removeAttribute("autoplay");
+          }
+        }
+        if (prefersReduced || !video) {
+          settle();
+          return;
+        }
+        video.addEventListener("ended", settle, { once: true });
+        video.addEventListener("error", settle, { once: true });
+        setTimeout(settle, 4200);
+        video.play?.().catch(settle);
+      })();
+
+      /* Project cards: open links */
+      (function projectCards() {
+        document.querySelectorAll(".project-card").forEach((card) => {
+          const href = card.getAttribute("data-href");
+          function open() {
+            if (href) window.open(href, "_blank", "noopener");
+          }
+          card.addEventListener("click", open);
+          card.addEventListener("keydown", (e) => {
+            if ((e.key === "Enter" || e.key === " ") && href) {
+              e.preventDefault();
+              open();
+            }
+          });
+        });
+      })();
+
+      /* Skills: headings marquee + panels */
+      (function skillHeadingsInit() {
+        if (window.__skillsInit) return;
+        window.__skillsInit = true;
+
+        const headingsTrack = document.getElementById("skillHeadingsTrack");
+        const panels = Array.from(document.querySelectorAll(".skill-panel"));
+        const details = document.getElementById("skillDetails");
+
+        const ICONS = {
+          Python: "python.png",
+          Java: "java.png",
+          JavaScript: "javascript.png",
+          Scala: "scala.png",
+          PySpark: "pyspark.png",
+          Spark: "spark.png",
+          Kafka: "kafka.png",
+          "Delta Lake": "deltalake.png",
+          Beam: "beam.png",
+          AWS: "aws.png",
+          Azure: "azure.png",
+          GCP: "gcp.png",
+          Snowflake: "snowflake.png",
+          Databricks: "databricks.png",
+          PostgreSQL: "postgresql.png",
+          MySQL: "mysql.png",
+          MongoDB: "mongodb.png",
+          Cassandra: "cassandra.png",
+          "Power BI": "powerbi.png",
+          Tableau: "tableau.png",
+          Looker: "looker.png",
+          Airflow: "airflow.png",
+          Kubernetes: "kubernetes.png",
+          Git: "git.png",
+          REST: "rest.png",
+          JSON: "json.png",
+          XML: "xml.png",
+        };
+
+        // Duplicate children for seamless single-row loop
+        if (headingsTrack && !headingsTrack.dataset.duplicated) {
+          const kids = Array.from(headingsTrack.children);
+          kids.forEach((k) => headingsTrack.appendChild(k.cloneNode(true)));
+          headingsTrack.dataset.duplicated = "1";
+        }
+
+        // Icon rules for skill pills
+        const rules = [];
+        document.querySelectorAll("#skills .skill-pill").forEach((pill) => {
+          const label =
+            pill.getAttribute("data-skill") || pill.textContent.trim();
+          const file = ICONS[label];
+          if (!file) return;
+          const url = `files/skills/${file}`;
+          const pid = `p${Math.random().toString(36).slice(2)}`;
+          pill.dataset.pid = pid;
+          rules.push(
+            `.skill-pill[data-pid="${pid}"]::before{background-image:url("${url}")}`,
+            `.skill-pill[data-pid="${pid}"]::after{background-image:url("${url}")}`
+          );
+        });
+        if (rules.length) {
+          const style = document.createElement("style");
+          style.textContent = rules.join("\n");
+          document.head.appendChild(style);
+        }
+
+        function setActive(cat) {
+          document.querySelectorAll(".skill-head").forEach((b) => {
+            b.classList.toggle("is-active", b.dataset.cat === cat);
+          });
+          panels.forEach((p) => {
+            const open = p.dataset.panel === cat;
+            p.setAttribute("aria-hidden", open ? "false" : "true");
+          });
+          document
+            .querySelector(`.skill-panel[data-panel="${cat}"]`)
+            ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        headingsTrack?.addEventListener("click", (e) => {
+          const btn = e.target.closest(".skill-head");
+          if (!btn) return;
+          setActive(btn.dataset.cat);
+        });
+
+        const NOTES = {
+          Python:
+            "ETL/ELT, APIs, data quality checks, orchestration glue code, and ML utilities.",
+          PySpark:
+            "Large-scale transforms, window functions, incremental loads, and Delta Lake merges.",
+          Kafka:
+            "Event ingestion, stream processing topologies, and backpressure-aware consumers.",
+          Snowflake:
+            "Warehouse modeling, tasks/streams, tuning, secure data sharing.",
+          Databricks: "Jobs, notebooks, DLT, Unity Catalog, ML/runtime mgmt.",
+          Airflow: "DAG design, retries, SLAs, alerts, backfills.",
+        };
+        document
+          .querySelector("#skills .skills-accordion")
+          ?.addEventListener("click", (e) => {
+            const pill = e.target.closest(".skill-pill");
+            if (!pill) return;
+            e.preventDefault();
+            const name =
+              pill.getAttribute("data-skill") || pill.textContent.trim();
+            const file = ICONS[name];
+            const icon = file ? `files/skills/${file}` : "";
+            details.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <span style="width:26px;height:26px;border-radius:999px;border:1px solid var(--border);
+                background:center/cover no-repeat url('${icon}');display:inline-block;"></span>
+              <h4 class="h4" style="margin:0;">${name}</h4>
+            </div>
+            <p class="muted small">Marquee and panel remain interactive.</p>
+            <p>${
+              NOTES[name] ||
+              "Used in production pipelines with testing, monitoring, and secure access."
+            }</p>
+          `;
+            details.hidden = false;
+          });
+
+        // Open first category by default
+        setActive("languages");
+      })();
+    </script>
+  </body>
+</html>
