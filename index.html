@@ -1019,10 +1019,15 @@
           }
         }
 
+<<<<<<< HEAD
+        function hideEmail(){ shown.hidden=true; timer.hidden=true; btn.hidden=false; clearInterval(tickT); hideT && clearTimeout(hideT); remaining=45; }
+        function tick(){ remaining -= 1; if (remaining>0) timer.textContent = \`Auto-hide in \${remaining}s\`; }
+=======
         // Initial: prefer saved; else detect system
         const saved = localStorage.getItem("theme");
         const initial = saved || (media.matches ? "dark" : "light");
         apply(initial);
+>>>>>>> de8fe602bb13a65248049718a5bf290af942fd47
 
         // Click to toggle
         btn &&
