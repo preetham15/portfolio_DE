@@ -286,13 +286,13 @@
         <!-- LEFT: name + avatar -->
         <div class="nav__left nav__profile">
           <img
-            src="files/main logo.png"
-            alt="Preetham Reddy Challa"
+            src="files/logo.png"
+            alt="Preetham Challa"
             class="nav__avatar"
           />
           <a
           href = "#home"
-          <span class="nav__name">Preetham Reddy Challa</span>
+          <span class="nav__name">Preetham Challa</span>
         </a>
         </div>
         <!-- CENTER: links -->
@@ -343,8 +343,8 @@
             <img
               id="avatarStatic"
               class="avatar-media is-static"
-              src="files/image.JPG"
-              alt="Preetham Reddy Challa portrait"
+              src="files/profilepic.jpg"
+              alt="Preetham Challa"
             />
           </div>
         </div>
@@ -603,6 +603,7 @@
           </div>
           <div id="skillDetails" class="skill-details" hidden></div>
         </div>
+
       </div>
     </section>
 
@@ -610,6 +611,7 @@
     <section id="experience" class="section section--tint">
       <div class="container reveal">
         <h2 class="h2 center">Featured Experience</h2>
+        <p class="lead center">Business tag appears on hover.</p>
         <div class="cards">
           <article class="card">
             <div class="biz-tag">Healthcare</div>
@@ -788,24 +790,26 @@
                   </span>
                 </div>
               </li>
+              
               <li class="contact__row">
                 <div class="contact__icon">📍</div>
                 <div>
                   <p class="muted small">Location</p>
-                  <p>Texas, USA</p>
+                  <p>MO, USA</p>
                 </div>
               </li>
             </ul>
-            <div class="contact-map contact-map--hover">
+            <div class="contact-map">
               <iframe
                 class="map-embed"
-                title="Map: Texas, USA"
-                src="https://www.google.com/maps?q=Texas%2C%20USA&z=5&output=embed"
+                title="Map: St Peters, MO"
+                src="https://www.google.com/maps?q=St%20Peters%2C%20MO&z=12&output=embed"
                 loading="lazy"
                 allowfullscreen
                 referrerpolicy="no-referrer-when-downgrade">
               </iframe>
             </div>
+            
             
           </div>
           <form class="contact__form" onsubmit="return false;">
@@ -1019,15 +1023,10 @@
           }
         }
 
-<<<<<<< HEAD
-        function hideEmail(){ shown.hidden=true; timer.hidden=true; btn.hidden=false; clearInterval(tickT); hideT && clearTimeout(hideT); remaining=45; }
-        function tick(){ remaining -= 1; if (remaining>0) timer.textContent = \`Auto-hide in \${remaining}s\`; }
-=======
         // Initial: prefer saved; else detect system
         const saved = localStorage.getItem("theme");
         const initial = saved || (media.matches ? "dark" : "light");
         apply(initial);
->>>>>>> de8fe602bb13a65248049718a5bf290af942fd47
 
         // Click to toggle
         btn &&

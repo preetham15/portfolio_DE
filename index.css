@@ -151,6 +151,39 @@ a {
     transparent 60%
   );
 }
+/* HERO avatar adjustments */
+.hero__avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-3d {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #2a3350;
+  box-shadow: 0 0 0 6px rgba(42, 51, 80, 0.35),
+    0 10px 36px rgba(109, 88, 255, 0.35);
+}
+
+/* Makes both video and image scale correctly inside the circle */
+.avatar-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures it fills circle without distortion */
+  border-radius: 50%;
+  display: block;
+}
+
+/* Optional: only show the image if video fails or not loaded */
+.avatar-media.is-static {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+}
 .hero__inner {
   display: grid;
   grid-template-columns: minmax(260px, 380px) minmax(0, 1fr);
@@ -572,16 +605,25 @@ html.dark .map-embed {
   filter: contrast(1.05) saturate(0.95) brightness(0.98);
 }
 
-/* OPTIONAL: if you want “show on hover” instead of always visible */
-.contact__card .contact-map--hover {
-  height: 0;
-  opacity: 0;
-  transition: height 0.35s ease, opacity 0.35s ease;
+.contact-map {
+  position: relative;
+  height: 220px; /* visible */
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 22px rgba(124, 92, 255, 0.25),
+    0 0 38px rgba(110, 231, 255, 0.15);
 }
-.contact__card:hover .contact-map--hover {
-  height: 220px; /* same as above */
-  opacity: 1;
+.map-embed {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
 }
+html.dark .map-embed {
+  filter: contrast(1.05) saturate(0.95) brightness(0.98);
+}
+
 #education .card__media {
   background: linear-gradient(90deg, var(--brand), var(--brand-2));
 }
