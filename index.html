@@ -17,6 +17,9 @@
   <body>
     <!-- ============== Nav ============== -->
     <header class="nav">
+      <!-- neon glow rail -->
+      <div class="nav-glow-rail" aria-hidden="true"></div>
+
       <div class="container nav__inner">
         <div class="brand"><a href="#home">Preetham Challa</a></div>
 
@@ -205,7 +208,7 @@
       </div>
     </section>
 
-    <!-- ============== Skills (scrolling headings + expanding panels) ============== -->
+    <!-- ============== Skills ============== -->
     <section id="skills" class="section">
       <div class="container narrow">
         <h2 class="h2 center">Skills &amp; Expertise</h2>
@@ -540,22 +543,40 @@
           <div class="contact__card">
             <h3 class="h3">Contact Information</h3>
             <ul class="contact__list">
+              <!-- click-to-reveal email for 45s -->
               <li>
                 <div class="contact__icon">✉</div>
                 <div>
                   <p class="muted small">Email</p>
                   <p>
-                    <a href="mailto:preethamch1503@gmail.com"
-                      >preethamch1503@gmail.com</a
-                    >
+                    <button id="revealEmail" class="reveal-pill" type="button" aria-live="polite">
+                      Click to reveal
+                    </button>
+                    <span id="emailShown" class="email-value" hidden>
+                      <a href="mailto:preethamch1503@gmail.com">preethamch1503@gmail.com</a>
+                    </span>
+                    <span id="emailTimer" class="tiny muted" hidden></span>
                   </p>
                 </div>
               </li>
+
+              <!-- map toggle (pure HTML iframe embed) -->
               <li>
                 <div class="contact__icon">📍</div>
                 <div>
                   <p class="muted small">Location</p>
                   <p>Texas, USA</p>
+                  <button id="mapToggle" class="reveal-pill" type="button" aria-expanded="false" aria-controls="mapBox">
+                    Show Map
+                  </button>
+                  <div id="mapBox" class="map-box" hidden>
+                    <iframe
+                      title="Texas Map"
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=-106.65,25.84,-93.51,36.50&layer=mapnik"
+                    ></iframe>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -845,6 +866,81 @@
 
         // Open first category by default
         setActive("languages");
+      })();
+
+      /* ===== NEW: Email reveal for 45s ===== */
+      (function emailReveal(){
+        const btn = document.getElementById('revealEmail');
+        const shown = document.getElementById('emailShown');
+        const timer = document.getElementById('emailTimer');
+        if(!btn || !shown || !timer) return;
+
+        let hideT = null, tickT = null, remaining = 45;
+
+        function hideEmail(){
+          shown.hidden = true;
+          timer.hidden = true;
+          btn.hidden = false;
+          btn.classList.remove('is-active');
+          clearInterval(tickT);
+          hideT && clearTimeout(hideT);
+          remaining = 45;
+        }
+        function tick(){
+          remaining -= 1;
+          if (remaining <= 0) return;
+          timer.textContent = `Auto-hide in ${remaining}s`;
+        }
+
+        btn.addEventListener('click', () => {
+          // reveal
+          btn.hidden = true;
+          shown.hidden = false;
+          btn.classList.add('is-active');
+          timer.hidden = false;
+          remaining = 45;
+          timer.textContent = `Auto-hide in ${remaining}s`;
+
+          tickT = setInterval(tick, 1000);
+          hideT = setTimeout(hideEmail, 45000);
+        });
+      })();
+
+      /* ===== NEW: Map toggle (no external libs) ===== */
+      (function mapToggle(){
+        const t = document.getElementById('mapToggle');
+        const box = document.getElementById('mapBox');
+        if(!t || !box) return;
+        t.addEventListener('click', () => {
+          const open = !box.hasAttribute('hidden');
+          if (open){
+            box.setAttribute('hidden', '');
+            t.setAttribute('aria-expanded', 'false');
+            t.textContent = 'Show Map';
+          } else {
+            box.removeAttribute('hidden');
+            t.setAttribute('aria-expanded', 'true');
+            t.textContent = 'Hide Map';
+          }
+        });
+      })();
+
+      /* ===== NEW: Scroll-in animations for cards & contact ===== */
+      (function scrollIn(){
+        const els = document.querySelectorAll('.cards .card, .project-card, .cred-card, .contact__card, .contact__form');
+        if(!('IntersectionObserver' in window) || !els.length){
+          els.forEach(el => el.classList.add('is-in')); // fallback
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if(e.isIntersecting){
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+        els.forEach(el => io.observe(el));
       })();
     </script>
   </body>
