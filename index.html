@@ -27,6 +27,7 @@
         --glow: 0 0 20px rgba(109, 88, 255, 0.35),
           0 0 36px rgba(94, 234, 255, 0.18);
       }
+      
       :root.light {
         /* LIGHT overrides */
         --bg: #f6f7fb;
@@ -102,6 +103,49 @@
       :root.light .nav__center a:hover {
         background: #f1f4fb;
       }
+      .contact__form { box-sizing:border-box; display:flex; flex-direction:column; gap:12px; }
+
+      /* Prevent any overflow from pushing outside the card on small screens */
+      .contact__card, .contact__form { max-width:100%; overflow:hidden; }
+
+      /* 2) CONTACT submit button: hover expansion w/ soft glow */
+      .btn--submit {
+      position:relative;
+      transform: translateZ(0); /* create new stacking context for smoother anim */
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      }
+      .btn--submit:hover {
+      transform: scale(1.03);
+      box-shadow: 0 14px 36px rgba(124,92,255,.35), 0 10px 28px rgba(34, 214, 240, .25);
+      filter: saturate(1.08);
+      }
+      .btn--submit:active { transform: scale(.995); }
+      @media (prefers-reduced-motion: reduce) {
+      .btn--submit { transition:none; }
+      }
+
+      /* 3) ABOUT cards: gentle expand + richer glow on hover */
+      .card {
+      will-change: transform, box-shadow;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      }
+      .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(124, 92, 255, 0.35);
+      box-shadow: 0 12px 34px rgba(124, 92, 255, 0.18), 0 10px 28px rgba(110,231,255,.12);
+      }
+      @media (prefers-reduced-motion: reduce) {
+      .card:hover { transform:none; }
+      }
+
+      /* 4) NAV hide/show transitions tuned for direction */
+      .nav { transition: transform var(--nav-hide, .32s) ease, opacity var(--nav-hide, .32s) ease, background-color .2s ease; }
+      .nav.nav--hidden { transform: translateY(-100%); opacity:.2; }
+      .nav.nav--visible { transform: translateY(0); opacity:1; --nav-hide:.18s; }
+
+      /* Optional: when hero is on screen, make nav slightly more translucent for the fade-through look */
+      .nav.nav--over-hero { background: rgba(10,12,18, .35); }
+      :root.light .nav.nav--over-hero { background: rgba(255,255,255, .65); }
 
       /* HERO: centered with circular avatar */
       .hero__inner {
@@ -868,7 +912,60 @@
         );
         document.querySelectorAll(".reveal").forEach((n) => io.observe(n));
       })();
+              // 1) NAV fade based on scroll direction (appears when scrolling up, eases away on scroll down)
+        (function navFadeOnScroll(){
+        const nav = document.querySelector('.nav');
+        if(!nav) return;
+        let lastY = window.scrollY || 0;
+        let ticking = false;
 
+        function update(){
+        const y = window.scrollY || 0;
+        const goingDown = y > lastY + 4; // threshold to avoid jitter
+        const goingUp = y < lastY - 4;
+
+        if(goingDown){
+        nav.classList.add('nav--hidden');
+        nav.classList.remove('nav--visible');
+        nav.style.setProperty('--nav-hide', '.32s'); // slower out
+        } else if(goingUp){
+        nav.classList.remove('nav--hidden');
+        nav.classList.add('nav--visible');
+        nav.style.setProperty('--nav-hide', '.18s'); // quicker in
+        }
+
+        // If hero is intersecting viewport top section, apply translucency
+        const hero = document.querySelector('.hero');
+        if(hero){
+        const rect = hero.getBoundingClientRect();
+        const overlapping = rect.top < 60 && rect.bottom > 0; // near nav region
+        nav.classList.toggle('nav--over-hero', overlapping);
+        }
+
+        lastY = y;
+        ticking = false;
+        }
+
+        window.addEventListener('scroll', ()=>{
+        if(!ticking){ requestAnimationFrame(update); ticking = true; }
+        }, { passive:true });
+
+        // Initial state
+        nav.classList.add('nav--visible');
+        })();
+
+        // 2) Ensure inputs pick up theme changes instantly (no flash) by forcing a repaint on theme toggle
+        (function syncThemeWithInputs(){
+        const btn = document.getElementById('themeToggle');
+        if(!btn) return;
+        btn.addEventListener('click', ()=>{
+        const forms = document.querySelectorAll('.input, .textarea');
+        forms.forEach(el=>{ el.style.willChange = 'background-color, color'; });
+        setTimeout(()=>{
+        forms.forEach(el=>{ el.style.willChange = ''; });
+        }, 220);
+        });
+        })();
       /* Cursor parallax / glow */
       (function cursorGlow() {
         const g = document.querySelector(".cursor-glow");
