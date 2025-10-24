@@ -27,7 +27,6 @@
         --glow: 0 0 20px rgba(109, 88, 255, 0.35),
           0 0 36px rgba(94, 234, 255, 0.18);
       }
-      
       :root.light {
         /* LIGHT overrides */
         --bg: #f6f7fb;
@@ -95,6 +94,8 @@
         background: #0e1426;
       }
 
+     
+
       /* Light mode tweaks for those links */
       :root.light .nav__center a {
         background: #ffffff;
@@ -103,49 +104,6 @@
       :root.light .nav__center a:hover {
         background: #f1f4fb;
       }
-      .contact__form { box-sizing:border-box; display:flex; flex-direction:column; gap:12px; }
-
-      /* Prevent any overflow from pushing outside the card on small screens */
-      .contact__card, .contact__form { max-width:100%; overflow:hidden; }
-
-      /* 2) CONTACT submit button: hover expansion w/ soft glow */
-      .btn--submit {
-      position:relative;
-      transform: translateZ(0); /* create new stacking context for smoother anim */
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      }
-      .btn--submit:hover {
-      transform: scale(1.03);
-      box-shadow: 0 14px 36px rgba(124,92,255,.35), 0 10px 28px rgba(34, 214, 240, .25);
-      filter: saturate(1.08);
-      }
-      .btn--submit:active { transform: scale(.995); }
-      @media (prefers-reduced-motion: reduce) {
-      .btn--submit { transition:none; }
-      }
-
-      /* 3) ABOUT cards: gentle expand + richer glow on hover */
-      .card {
-      will-change: transform, box-shadow;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-      }
-      .card:hover {
-      transform: translateY(-4px) scale(1.02);
-      border-color: rgba(124, 92, 255, 0.35);
-      box-shadow: 0 12px 34px rgba(124, 92, 255, 0.18), 0 10px 28px rgba(110,231,255,.12);
-      }
-      @media (prefers-reduced-motion: reduce) {
-      .card:hover { transform:none; }
-      }
-
-      /* 4) NAV hide/show transitions tuned for direction */
-      .nav { transition: transform var(--nav-hide, .32s) ease, opacity var(--nav-hide, .32s) ease, background-color .2s ease; }
-      .nav.nav--hidden { transform: translateY(-100%); opacity:.2; }
-      .nav.nav--visible { transform: translateY(0); opacity:1; --nav-hide:.18s; }
-
-      /* Optional: when hero is on screen, make nav slightly more translucent for the fade-through look */
-      .nav.nav--over-hero { background: rgba(10,12,18, .35); }
-      :root.light .nav.nav--over-hero { background: rgba(255,255,255, .65); }
 
       /* HERO: centered with circular avatar */
       .hero__inner {
@@ -175,62 +133,88 @@
         margin-top: 12px;
       }
       /* Single-column list */
-.edu-list{
-  display:grid;
-  grid-template-columns:1fr;      /* 1 card per row */
-  gap:16px;
-}
+      .edu-list {
+        display: grid;
+        grid-template-columns: 1fr; /* 1 card per row */
+        gap: 16px;
+      }
 
-/* Clickable card */
-.edu-card{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:14px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  background:linear-gradient(180deg,var(--card),rgba(0,0,0,0));
-  text-decoration:none;
-  color:inherit;
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  position:relative;
-}
+      /* Clickable card */
+      .edu-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: linear-gradient(180deg, var(--card), rgba(0, 0, 0, 0));
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          border-color 0.2s ease;
+        position: relative;
+      }
 
-.edu-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(124,92,255,.35);
-  box-shadow:var(--glow);
-}
+      .edu-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(124, 92, 255, 0.35);
+        box-shadow: var(--glow);
+      }
 
-/* Small icon bubble */
-.edu-icon{
-  width:40px;height:40px;flex:0 0 40px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--brand-2),var(--brand));
-  color:#0b0f19;font-size:20px;font-weight:700;
-  box-shadow:0 6px 16px rgba(0,0,0,.25);
-}
+      /* Small icon bubble */
+      .edu-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--brand-2), var(--brand));
+        color: #0b0f19;
+        font-size: 20px;
+        font-weight: 700;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
 
-/* Body text */
-.edu-body{flex:1;min-width:0}
-.edu-title{margin:.1rem 0 .2rem;font-size:1.05rem}
-.edu-meta{margin:0 0 .35rem;color:var(--muted)}
-.edu-desc{margin:0}
+      /* Body text */
+      .edu-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .edu-title {
+        margin: 0.1rem 0 0.2rem;
+        font-size: 1.05rem;
+      }
+      .edu-meta {
+        margin: 0 0 0.35rem;
+        color: var(--muted);
+      }
+      .edu-desc {
+        margin: 0;
+      }
 
-/* Arrow */
-.edu-cta{
-  font-size:18px;line-height:1;
-  margin-left:8px;align-self:center;
-  opacity:.7;transform:translateX(0);
-  transition:opacity .2s ease, transform .2s ease;
-}
-.edu-card:hover .edu-cta{opacity:1;transform:translateX(2px)}
+      /* Arrow */
+      .edu-cta {
+        font-size: 18px;
+        line-height: 1;
+        margin-left: 8px;
+        align-self: center;
+        opacity: 0.7;
+        transform: translateX(0);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .edu-card:hover .edu-cta {
+        opacity: 1;
+        transform: translateX(2px);
+      }
 
-/* Light theme tweaks */
-:root.light .edu-card{background:#fff}
-:root.light .edu-icon{color:#fff}
-
+      /* Light theme tweaks */
+      :root.light .edu-card {
+        background: #fff;
+      }
+      :root.light .edu-icon {
+        color: #fff;
+      }
 
       /* Skills marquee visibility */
       .skill-headings-marquee {
@@ -285,39 +269,40 @@
       /* Cards / panels */
       .card,
       .contact__card,
-      .contact__form,
       .project-card {
         background: linear-gradient(180deg, #0b0f19, #090d15);
         border: 1px solid var(--border);
       }
       :root.light .card,
       :root.light .contact__card,
-      :root.light .contact__form,
       :root.light .project-card {
         background: #ffffff;
       }
       /* Reveal + copy buttons (rounded to match your design) */
-.reveal-btn, .copy-btn{
-  border:1px solid var(--border);
-  background:linear-gradient(180deg,#0f1629,#0a0f1f);
-  color:var(--ink);
-  padding:8px 12px;
-  border-radius:9999px;
-  cursor:pointer;
-  box-shadow:var(--glow);
-}
-:root.light .reveal-btn, :root.light .copy-btn{
-  background:linear-gradient(180deg,#ffffff,#f2f5fb);
-  color:#0b0f19;
-}
+      .reveal-btn,
+      .copy-btn {
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, #0f1629, #0a0f1f);
+        color: var(--ink);
+        padding: 8px 12px;
+        border-radius: 9999px;
+        cursor: pointer;
+        box-shadow: var(--glow);
+      }
+      :root.light .reveal-btn,
+      :root.light .copy-btn {
+        background: linear-gradient(180deg, #ffffff, #f2f5fb);
+        color: #0b0f19;
+      }
 
-.email-shown a{
-  border-bottom:1px dashed var(--border);
-  padding-bottom:2px;
-  margin-left:8px;
-}
-.copy-btn{ margin-left:8px; }
-
+      .email-shown a {
+        border-bottom: 1px dashed var(--border);
+        padding-bottom: 2px;
+        margin-left: 8px;
+      }
+      .copy-btn {
+        margin-left: 8px;
+      }
     </style>
   </head>
   <body>
@@ -329,15 +314,10 @@
       <div class="container nav__inner nav__grid">
         <!-- LEFT: name + avatar -->
         <div class="nav__left nav__profile">
-          <img
-            src="files/logo.png"
-            alt="Preetham Challa"
-            class="nav__avatar"
-          />
-          <a
-          href = "#home"
-          <span class="nav__name">Preetham Challa</span>
-        </a>
+          <img src="files/logo.png" alt="Preetham Challa" class="nav__avatar" />
+          <a href="#home">
+            <span class="nav__name">Preetham Challa</span>
+          </a>
         </div>
         <!-- CENTER: links -->
         <nav class="nav__center" aria-label="Primary">
@@ -465,49 +445,66 @@
         </div>
       </div>
     </section>
- <!-- ============== Education & Certifications ============== -->
-<section id="education" class="section section--tint">
-  <div class="container narrow reveal">
-    <h2 class="h2 center">Education &amp; Certifications</h2>
+    <!-- ============== Education & Certifications ============== -->
+    <section id="education" class="section section--tint">
+      <div class="container narrow reveal">
+        <h2 class="h2 center">Education &amp; Certifications</h2>
 
-    <div class="edu-list">
-      <!-- Card 1: Degree -->
-      <a class="edu-card" href="https://www.ucmo.edu/index.php" target="_blank" rel="noopener">
-        <div class="edu-icon" aria-hidden="true">🎓</div>
-        <div class="edu-body">
-          <h3 class="edu-title">Master’s in Computer Science</h3>
-          <p class="edu-meta">
-            <strong>University of Central Missouri</strong> · Jan 2023 – May 2024
-          </p>
-          <p class="edu-desc muted small">
-            Tools &amp; Tech: Python, Java, Spark, Snowflake, AWS, Azure, Databricks, Airflow
-          </p>
-        </div>
-        <span class="edu-cta" aria-hidden="true">↗</span>
-      </a>
+        <div class="edu-list">
+          <!-- Card 1: Degree -->
+          <a
+            class="edu-card"
+            href="https://www.ucmo.edu/index.php"
+            target="_blank"
+            rel="noopener"
+          >
+            <div class="edu-icon" aria-hidden="true">🎓</div>
+            <div class="edu-body">
+              <h3 class="edu-title">Master’s in Computer Science</h3>
+              <p class="edu-meta">
+                <strong>University of Central Missouri</strong> · Jan 2023 – May
+                2024
+              </p>
+              <p class="edu-desc muted small">
+                Tools &amp; Tech: Python, Java, Spark, Snowflake, AWS, Azure,
+                Databricks, Airflow
+              </p>
+            </div>
+            <span class="edu-cta" aria-hidden="true">↗</span>
+          </a>
 
-      <!-- Card 2: Certification -->
-      <a class="edu-card" href="https://cp.certmetrics.com/amazon/en/public/verify/credential" target="_blank" rel="noopener">
-        <div class="edu-icon" aria-hidden="true">✅</div>
-        <div class="edu-body">
-          <h3 class="edu-title">AWS Certified Data Engineer – Associate</h3>
-          <p class="edu-meta">
-            <strong>Amazon Web Services</strong> · Feb 2024 – Feb 2028
-          </p>
-          <p class="edu-desc muted small">
-            Focus: Data lakes, ELT/ETL automation, lakehouse patterns, cost/perf tuning on AWS
-          </p>
+          <!-- Card 2: Certification -->
+          <a
+            class="edu-card"
+            href="https://cp.certmetrics.com/amazon/en/public/verify/credential"
+            target="_blank"
+            rel="noopener"
+          >
+            <div class="edu-icon" aria-hidden="true">✅</div>
+            <div class="edu-body">
+              <h3 class="edu-title">AWS Certified Data Engineer – Associate</h3>
+              <p class="edu-meta">
+                <strong>Amazon Web Services</strong> · Feb 2024 – Feb 2028
+              </p>
+              <p class="edu-desc muted small">
+                Focus: Data lakes, ELT/ETL automation, lakehouse patterns,
+                cost/perf tuning on AWS
+              </p>
+            </div>
+            <span class="edu-cta" aria-hidden="true">↗</span>
+          </a>
         </div>
-        <span class="edu-cta" aria-hidden="true">↗</span>
-      </a>
-    </div>
-  </div>
-</section>
+      </div>
+    </section>
 
     <!-- ============== Skills (Infinite-scrolling headings; subhead opens; belt moves; details on pill) ============== -->
     <section id="skills" class="section">
       <div class="container narrow reveal">
         <h2 class="h2 center">Skills &amp; Expertise</h2>
+        <p class="lead center">
+          Main heading scrolls infinitely. Click a heading to open sub-skills;
+          click a pill to see where you used it.
+        </p>
 
         <!-- Infinite Scrolling Headings composed as requested -->
         <div class="skill-headings-marquee" aria-label="Skill Categories">
@@ -643,7 +640,6 @@
           </div>
           <div id="skillDetails" class="skill-details" hidden></div>
         </div>
-
       </div>
     </section>
 
@@ -811,7 +807,7 @@
                 <div class="contact__icon">✉</div>
                 <div>
                   <p class="muted small">Email</p>
-              
+
                   <!-- Reveal button -->
                   <button
                     id="revealEmail"
@@ -822,15 +818,22 @@
                   >
                     Click to reveal email
                   </button>
-              
+
                   <!-- Email area (hidden by default) -->
                   <span id="emailShown" class="email-shown" hidden>
                     <a id="emailLink" href="#" rel="nofollow">email</a>
-                    <button id="copyEmail" class="copy-btn" type="button" aria-label="Copy email">Copy</button>
+                    <button
+                      id="copyEmail"
+                      class="copy-btn"
+                      type="button"
+                      aria-label="Copy email"
+                    >
+                      Copy
+                    </button>
                   </span>
                 </div>
               </li>
-              
+
               <li class="contact__row">
                 <div class="contact__icon">📍</div>
                 <div>
@@ -846,33 +849,11 @@
                 src="https://www.google.com/maps?q=St%20Peters%2C%20MO&z=12&output=embed"
                 loading="lazy"
                 allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade">
+                referrerpolicy="no-referrer-when-downgrade"
+              >
               </iframe>
             </div>
-            
-            
           </div>
-          <form class="contact__form" onsubmit="return false;">
-            <label class="label" for="name">Name</label>
-            <input id="name" class="input" placeholder="Your name" />
-            <label class="label" for="email">Email</label>
-            <input
-              id="email"
-              class="input"
-              type="email"
-              placeholder="your.email@example.com"
-            />
-            <label class="label" for="message">Message</label>
-            <textarea
-              id="message"
-              class="textarea"
-              rows="6"
-              placeholder="Tell me about your project..."
-            ></textarea>
-            <button class="btn btn--full btn--submit" type="submit">
-              Send Message
-            </button>
-          </form>
         </div>
       </div>
     </section>
@@ -912,60 +893,7 @@
         );
         document.querySelectorAll(".reveal").forEach((n) => io.observe(n));
       })();
-              // 1) NAV fade based on scroll direction (appears when scrolling up, eases away on scroll down)
-        (function navFadeOnScroll(){
-        const nav = document.querySelector('.nav');
-        if(!nav) return;
-        let lastY = window.scrollY || 0;
-        let ticking = false;
 
-        function update(){
-        const y = window.scrollY || 0;
-        const goingDown = y > lastY + 4; // threshold to avoid jitter
-        const goingUp = y < lastY - 4;
-
-        if(goingDown){
-        nav.classList.add('nav--hidden');
-        nav.classList.remove('nav--visible');
-        nav.style.setProperty('--nav-hide', '.32s'); // slower out
-        } else if(goingUp){
-        nav.classList.remove('nav--hidden');
-        nav.classList.add('nav--visible');
-        nav.style.setProperty('--nav-hide', '.18s'); // quicker in
-        }
-
-        // If hero is intersecting viewport top section, apply translucency
-        const hero = document.querySelector('.hero');
-        if(hero){
-        const rect = hero.getBoundingClientRect();
-        const overlapping = rect.top < 60 && rect.bottom > 0; // near nav region
-        nav.classList.toggle('nav--over-hero', overlapping);
-        }
-
-        lastY = y;
-        ticking = false;
-        }
-
-        window.addEventListener('scroll', ()=>{
-        if(!ticking){ requestAnimationFrame(update); ticking = true; }
-        }, { passive:true });
-
-        // Initial state
-        nav.classList.add('nav--visible');
-        })();
-
-        // 2) Ensure inputs pick up theme changes instantly (no flash) by forcing a repaint on theme toggle
-        (function syncThemeWithInputs(){
-        const btn = document.getElementById('themeToggle');
-        if(!btn) return;
-        btn.addEventListener('click', ()=>{
-        const forms = document.querySelectorAll('.input, .textarea');
-        forms.forEach(el=>{ el.style.willChange = 'background-color, color'; });
-        setTimeout(()=>{
-        forms.forEach(el=>{ el.style.willChange = ''; });
-        }, 220);
-        });
-        })();
       /* Cursor parallax / glow */
       (function cursorGlow() {
         const g = document.querySelector(".cursor-glow");
@@ -1136,41 +1064,41 @@
         //   }
         // });
       })();
-      (function emailReveal(){
-    const btn = document.getElementById('revealEmail');
-    const shown = document.getElementById('emailShown');
-    const link = document.getElementById('emailLink');
-    const copy = document.getElementById('copyEmail');
+      (function emailReveal() {
+        const btn = document.getElementById("revealEmail");
+        const shown = document.getElementById("emailShown");
+        const link = document.getElementById("emailLink");
+        const copy = document.getElementById("copyEmail");
 
-    if(!btn || !shown || !link) return;
+        if (!btn || !shown || !link) return;
 
-    function buildEmail(){
-      // assemble from data attributes to avoid bots scraping the HTML
-      const user = btn.dataset.u || '';
-      const dom  = btn.dataset.d || '';
-      return user + '@' + dom;
-    }
+        function buildEmail() {
+          // assemble from data attributes to avoid bots scraping the HTML
+          const user = btn.dataset.u || "";
+          const dom = btn.dataset.d || "";
+          return user + "@" + dom;
+        }
 
-    btn.addEventListener('click', ()=>{
-      const address = buildEmail();
-      link.textContent = address;
-      link.href = 'mailto:' + address;
-      btn.hidden = true;
-      shown.hidden = false;
-    });
+        btn.addEventListener("click", () => {
+          const address = buildEmail();
+          link.textContent = address;
+          link.href = "mailto:" + address;
+          btn.hidden = true;
+          shown.hidden = false;
+        });
 
-    copy?.addEventListener('click', async ()=>{
-      const address = link.textContent.trim();
-      try{
-        await navigator.clipboard.writeText(address);
-        copy.textContent = 'Copied!';
-        setTimeout(()=> copy.textContent = 'Copy', 1200);
-      }catch(_){
-        copy.textContent = 'Copy failed';
-        setTimeout(()=> copy.textContent = 'Copy', 1200);
-      }
-    });
-  })();
+        copy?.addEventListener("click", async () => {
+          const address = link.textContent.trim();
+          try {
+            await navigator.clipboard.writeText(address);
+            copy.textContent = "Copied!";
+            setTimeout(() => (copy.textContent = "Copy"), 1200);
+          } catch (_) {
+            copy.textContent = "Copy failed";
+            setTimeout(() => (copy.textContent = "Copy"), 1200);
+          }
+        });
+      })();
     </script>
   </body>
 </html>
