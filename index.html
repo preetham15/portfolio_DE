@@ -93,8 +93,16 @@
       .nav__center a:hover {
         background: #0e1426;
       }
+      z
 
-     
+      /* CONTACT: single-column and full-width card */
+      .contact {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .contact__card {
+        max-width: 100%;
+      }
 
       /* Light mode tweaks for those links */
       :root.light .nav__center a {
@@ -501,41 +509,28 @@
     <section id="skills" class="section">
       <div class="container narrow reveal">
         <h2 class="h2 center">Skills &amp; Expertise</h2>
-        <p class="lead center">
-          Main heading scrolls infinitely. Click a heading to open sub-skills;
-          click a pill to see where you used it.
-        </p>
+        <p class="lead center"></p>
 
         <!-- Infinite Scrolling Headings composed as requested -->
         <div class="skill-headings-marquee" aria-label="Skill Categories">
           <div class="skill-headings-track" id="skillHeadingsTrack">
             <button class="skill-head btn-pill" data-cat="prog">
-              Programming and Scripting: Java, SQL, JavaScript, Shell Scripting,
-              Python, C
+              Programming and Scripting
             </button>
             <button class="skill-head btn-pill" data-cat="web">
-              Web Development Technologies: HTML, XML, JSON, CSS, JavaScript,
-              Flask, Django
+              Web Development
             </button>
             <button class="skill-head btn-pill" data-cat="big">
-              Hadoop/Big Data: Kafka, Azure Databricks, HDFS, Apache NiFi,
-              MapReduce, Hive, Spark, Scala
+              Hadoop/Big Data
             </button>
-            <button class="skill-head btn-pill" data-cat="db">
-              Databases: Oracle, MySQL, MSSQL Server, Teradata, HBase,
-              Cassandra, MongoDB
-            </button>
+            <button class="skill-head btn-pill" data-cat="db">Databases</button>
             <button class="skill-head btn-pill" data-cat="cloud">
-              Cloud Services: AWS (EC2, EMR, S3, Redshift, Lambda, Glue,
-              Athena), Azure, GCP (BigQuery, Dataflow, GCS, Pub/Sub)
+              Cloud Services
             </button>
             <button class="skill-head btn-pill" data-cat="os">
-              Operating Systems: Linux, Unix, Windows
+              Operating Systems
             </button>
-            <button class="skill-head btn-pill" data-cat="other">
-              Others: Tableau, Snowflake, VS Code, Hugging Face, OpenAI APIs,
-              TCP/IP, HTTP, DNS
-            </button>
+            <button class="skill-head btn-pill" data-cat="other">Others</button>
           </div>
         </div>
 
@@ -559,7 +554,6 @@
               <h3 class="h3">Web Development</h3>
               <div class="skill-logo-row">
                 <a class="skill-pill" data-skill="HTML">HTML</a>
-                <a class="skill-pill" data-skill="XML">XML</a>
                 <a class="skill-pill" data-skill="JSON">JSON</a>
                 <a class="skill-pill" data-skill="CSS">CSS</a>
                 <a class="skill-pill" data-skill="JavaScript">JavaScript</a>
@@ -576,10 +570,8 @@
                 <a class="skill-pill" data-skill="Azure Databricks"
                   >Azure Databricks</a
                 >
-                <a class="skill-pill" data-skill="HDFS">HDFS</a>
                 <a class="skill-pill" data-skill="NiFi">Apache NiFi</a>
                 <a class="skill-pill" data-skill="MapReduce">MapReduce</a>
-                <a class="skill-pill" data-skill="Hive">Hive</a>
                 <a class="skill-pill" data-skill="Spark">Spark</a>
                 <a class="skill-pill" data-skill="Scala">Scala</a>
               </div>
@@ -593,7 +585,6 @@
                 <a class="skill-pill" data-skill="MySQL">MySQL</a>
                 <a class="skill-pill" data-skill="MSSQL">MSSQL Server</a>
                 <a class="skill-pill" data-skill="Teradata">Teradata</a>
-                <a class="skill-pill" data-skill="HBase">HBase</a>
                 <a class="skill-pill" data-skill="Cassandra">Cassandra</a>
                 <a class="skill-pill" data-skill="MongoDB">MongoDB</a>
               </div>
@@ -859,7 +850,9 @@
     </section>
 
     <footer class="footer">
-      <div class="container center">© 2025 Portfolio. All rights reserved.</div>
+      <div class="container center">
+        © 2025 Preetham Portfolio. All rights reserved.
+      </div>
     </footer>
 
     <!-- ============== JS (inline) ============== -->
@@ -983,24 +976,69 @@
             },
             { name: "Starbucks", work: "Spark SQL transformations" },
           ],
+          JavaScript: [
+            {
+              name: "University of central Missouri",
+              work: "Used to build interactive and dynamic content in webdevelopemnt",
+            },
+          ],
           Python: [
             {
               name: "UnitedHealth Group",
               work: "ETL glue, quality checks, de-id",
             },
-            { name: "Verizon", work: "Streaming utilities & data ops" },
+            {
+              name: "Verizon",
+              work: "Built validation scripts and automated anomaly detection on streaming data.",
+            },
           ],
+          Flask: [
+            {
+              name: "University of central Missouri",
+              work: "used to build web applications and APIs and used templating engines like Jinja2 to HTML",
+            },
+          ],
+          Django: [
+            {
+              name: "University of central Missouri",
+              work: "Used to Developing Web Applications, Creating APIs, Database Interaction, Handling User Authentication and Permissions",
+            },
+          ],
+
+          CSS: [
+            {
+              name: "University of central Missouri",
+              work: "Used for styling webpages Example: portfolio ",
+            },
+          ],
+
           Kafka: [
-            { name: "Verizon", work: "Streaming ingestion & SLAs" },
-            { name: "Internal", work: "Backpressure-aware consumers" },
+            {
+              name: "Verizon",
+              work: "treamed terabytes of network logs and usage metrics in real time; designed Kafka topics with partitioning and retention policies for scalability.",
+            },
           ],
           AWS: [
             { name: "Internal", work: "EMR jobs, S3 data lake, Glue catalogs" },
             { name: "UHG", work: "Athena reporting & cost controls" },
           ],
+          Azure: [
+            {
+              name: "UHG",
+              work: "Designed 20+ parameterized pipelines integrating REST APIs, sFTP, and SQL Server data; implemented dynamic linked services to support multi-tenant ingestion.",
+            },
+          ],
+          GCP: [
+            {
+              name: "Verizon",
+              work: "Built and optimized a cloud-native data lake and analytics platform on GCP to centralize and process large-scale customer usage, network, and device telemetry data in real time for advanced analytics and ML workloads.",
+            },
+          ],
           Snowflake: [
-            { name: "UHG", work: "Tasks/streams; secure shares" },
-            { name: "Internal", work: "Warehouse sizing & monitors" },
+            {
+              name: "UHG",
+              work: "Built modular dbt models to transform raw layer data into curated marts; leveraged Snowflake’s micro-partitioning and clustering for faster analytical queries.",
+            },
           ],
         };
         document.getElementById("skillsAcc")?.addEventListener("click", (e) => {
@@ -1012,7 +1050,7 @@
             DETAILS_MAP[name] || [
               {
                 name: "Project",
-                work: "Used in production with tests and monitoring",
+                work: "used in different stages of the project for developing ETL and dashboards",
               },
             ]
           )
