@@ -117,11 +117,8 @@ a {
 .hero__bg .blob {
   position: absolute;
   inset: 0;
-  z-index: -1;
   background:
-    /* optional dark overlay for legibility */
     linear-gradient(180deg, rgba(7,9,14,.55), rgba(7,9,14,.65)),
-    /* your image */
     url("files/background1.jpg") center/cover no-repeat;
   pointer-events: none;
   filter: blur(40px);
@@ -666,4 +663,37 @@ html.dark .map-embed {
 }
 .copy-btn {
   margin-left: 8px;
+}
+
+
+/* Background image sits behind everything in the hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* behind hero content and blobs */
+  background:
+    linear-gradient(180deg, rgba(7,9,14,.50), rgba(7,9,14,.60)), /* legibility */
+    url("files/background1.jpg") center/cover no-repeat;
+  background-attachment: fixed; /* optional parallax feel; remove if not wanted */
+  pointer-events: none;
+}
+
+/* Light theme variant (optional) */
+:root.light .hero::before {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.25)),
+    url("files/background1.jpg") center/cover no-repeat;
+}
+
+/* Your base blob should NOT set an image or inset:0 — let variants position them */
+.hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero__bg .blob {
+  position: absolute;
+  filter: blur(40px);
+  opacity: 0.6;
 }

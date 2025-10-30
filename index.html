@@ -350,7 +350,8 @@
       </div>
     </header>
     <div class="nav-spacer"></div>
-
+  <section class="hero" id="home" aria-label="Intro">
+  <div class="hero__bg">
         <div class="blob blob--a"></div>
         <div class="blob blob--b"></div>
       </div>
@@ -635,7 +636,6 @@
     <section id="experience" class="section section--tint">
       <div class="container reveal">
         <h2 class="h2 center">Featured Experience</h2>
-        <p class="lead center">Business tag appears on hover.</p>
         <div class="cards">
           <article class="card">
             <div class="biz-tag">Healthcare</div>
@@ -1134,6 +1134,22 @@
           }
         });
       })();
+      // Cursor spotlight on hero
+(function heroSpotlight(){
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  function setPos(e){
+    const r = hero.getBoundingClientRect();
+    hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }
+  hero.addEventListener('mousemove', setPos);
+  hero.addEventListener('mouseenter', setPos);
+  hero.addEventListener('mouseleave', () => {
+    hero.style.removeProperty('--mx');
+    hero.style.removeProperty('--my');
+  });
+})();
     </script>
   </body>
 </html>
