@@ -323,8 +323,11 @@
         <!-- LEFT: name + avatar -->
         <div class="nav__left nav__profile">
           <img src="files/logo.png" alt="Preetham Challa" class="nav__avatar" />
-          <a href="#home">
-            <span class="nav__name">Preetham Challa</span>
+          <a href="#home" class="brand" aria-label="Preetham Challa — Home">
+            <!-- Keeps layout size; hidden visually but readable to screen readers -->
+            <span class="nav__name" id="brandText">Preetham Challa</span>
+            <!-- Effect canvas sits on top, same size as the span -->
+            <canvas id="brandFx" class="brand-fx" aria-hidden="true"></canvas>
           </a>
         </div>
         <!-- CENTER: links -->
@@ -350,12 +353,17 @@
       </div>
     </header>
     <div class="nav-spacer"></div>
-  <section class="hero" id="home" aria-label="Intro">
-  <div class="hero__bg">
+    <section class="hero" id="home" aria-label="Intro">
+      <div class="hero__bg">
         <div class="blob blob--a"></div>
         <div class="blob blob--b"></div>
       </div>
-
+      <!-- Particle canvas (sits between bg image/blobs and content) -->
+      <canvas
+        id="heroParticles"
+        class="hero-canvas"
+        aria-hidden="true"
+      ></canvas>
       <div class="container hero__inner reveal">
         <div class="hero__avatar" aria-hidden="true">
           <div class="avatar-3d">
@@ -504,7 +512,7 @@
     </section>
 
     <!-- ============== Skills (Infinite-scrolling headings; subhead opens; belt moves; details on pill) ============== -->
-    <section id="skills" class="section">
+    <section id="skills" class="section bg-skills">
       <div class="container narrow reveal">
         <h2 class="h2 center">Skills &amp; Expertise</h2>
         <p class="lead center"></p>
@@ -633,7 +641,7 @@
     </section>
 
     <!-- ============== Experience ============== -->
-    <section id="experience" class="section section--tint">
+    <section id="experience" class="section bg-experience section--tint">
       <div class="container reveal">
         <h2 class="h2 center">Featured Experience</h2>
         <div class="cards">
@@ -784,7 +792,7 @@
     </section>
 
     <!-- ============== Contact (Neon preserved; Submit visible) ============== -->
-    <section id="contact" class="section">
+    <section id="contact" class="section bg-contact">
       <div class="container reveal">
         <h2 class="h2 center">Get In Touch</h2>
         <div class="contact">
@@ -1134,22 +1142,127 @@
           }
         });
       })();
-      // Cursor spotlight on hero
-(function heroSpotlight(){
-  const hero = document.querySelector('.hero');
-  if (!hero) return;
-  function setPos(e){
-    const r = hero.getBoundingClientRect();
-    hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-    hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }
-  hero.addEventListener('mousemove', setPos);
-  hero.addEventListener('mouseenter', setPos);
-  hero.addEventListener('mouseleave', () => {
-    hero.style.removeProperty('--mx');
-    hero.style.removeProperty('--my');
-  });
-})();
+      (function brandParticlesStatic() {
+        const span = document.getElementById("brandText");
+        const canvas = document.getElementById("brandFx");
+        if (!span || !canvas) return;
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+        // Tunables (keep subtle for nav)
+        const GAP = 3; // sampling grid (bigger = fewer dots)
+        const DOT = 1.3; // dot radius
+        const PADX = 0; // optional extra left/right padding inside canvas
+
+        function colors() {
+          const cs = getComputedStyle(document.documentElement);
+          return {
+            brand: cs.getPropertyValue("--brand").trim() || "#5eeaff",
+            brand2: cs.getPropertyValue("--brand-2").trim() || "#6d58ff",
+            ink: cs.getPropertyValue("--ink").trim() || "#ffffff",
+          };
+        }
+
+        function lerpColor(a, b, t) {
+          function hexToRgb(h) {
+            const s = h.replace("#", "");
+            const n =
+              s.length === 3
+                ? s
+                    .split("")
+                    .map((x) => x + x)
+                    .join("")
+                : s;
+            return {
+              r: parseInt(n.slice(0, 2), 16),
+              g: parseInt(n.slice(2, 4), 16),
+              b: parseInt(n.slice(4, 6), 16),
+            };
+          }
+          try {
+            const A = hexToRgb(a),
+              B = hexToRgb(b);
+            const r = Math.round(A.r + (B.r - A.r) * t),
+              g = Math.round(A.g + (B.g - A.g) * t),
+              b2 = Math.round(A.b + (B.b - A.b) * t);
+            return `rgb(${r},${g},${b2})`;
+          } catch {
+            return a;
+          }
+        }
+
+        function fitCanvasToSpan() {
+          // Measure the hidden text box (it’s visible: hidden so size is real)
+          const r = span.getBoundingClientRect();
+          const W = Math.max(10, Math.floor(r.width));
+          const H = Math.max(10, Math.floor(r.height));
+          canvas.style.width = W + "px";
+          canvas.style.height = H + "px";
+          canvas.width = Math.floor((W + PADX * 2) * dpr);
+          canvas.height = Math.floor(H * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          return { W, H };
+        }
+
+        function drawStatic() {
+          const { W, H } = fitCanvasToSpan();
+          const { brand, brand2 } = colors();
+
+          // Render the original text to an offscreen canvas (to sample pixels)
+          const off = document.createElement("canvas");
+          off.width = W;
+          off.height = H;
+          const o = off.getContext("2d");
+          o.clearRect(0, 0, W, H);
+
+          // Use the *computed* font of the span so it matches your nav styling
+          const cs = getComputedStyle(span);
+          const font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+          o.font = font;
+          o.textAlign = "left";
+          o.textBaseline = "top";
+
+          // Ensure we draw exactly where the span’s text would be
+          // (Using line-height to center vertically if needed)
+          const lineHeight = parseFloat(cs.lineHeight) || H;
+          const y = (H - parseFloat(cs.fontSize)) * 0.5; // approx vertical align
+          o.fillStyle = "#fff";
+          o.fillText(span.textContent.trim(), 0, Math.max(0, y));
+
+          // Sample opaque pixels and paint dots on the visible canvas
+          const id = o.getImageData(0, 0, W, H).data;
+          ctx.clearRect(0, 0, W + PADX * 2, H);
+
+          let i = 0;
+          for (let y = 0; y < H; y += GAP) {
+            for (let x = 0; x < W; x += GAP) {
+              const a = id[(y * W + x) * 4 + 3];
+              if (a > 128) {
+                const t = (i++ % W) / Math.max(1, W - 1); // simple gradient across width
+                ctx.fillStyle = lerpColor(brand, brand2, t);
+                ctx.beginPath();
+                ctx.arc(x + PADX, y, DOT, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+          }
+        }
+
+        // Initial draw
+        drawStatic();
+
+        // Redraw on resize (debounced) and theme toggle (colors change)
+        let to;
+        window.addEventListener("resize", () => {
+          clearTimeout(to);
+          to = setTimeout(drawStatic, 120);
+        });
+        document
+          .getElementById("themeToggle")
+          ?.addEventListener("click", () => {
+            setTimeout(drawStatic, 0);
+          });
+      })();
     </script>
   </body>
 </html>

@@ -117,8 +117,11 @@ a {
 .hero__bg .blob {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(7,9,14,.55), rgba(7,9,14,.65)),
+  background: linear-gradient(
+      180deg,
+      rgba(7, 9, 14, 0.55),
+      rgba(7, 9, 14, 0.65)
+    ),
     url("files/background1.jpg") center/cover no-repeat;
   pointer-events: none;
   filter: blur(40px);
@@ -664,36 +667,149 @@ html.dark .map-embed {
 .copy-btn {
   margin-left: 8px;
 }
-
-
-/* Background image sits behind everything in the hero */
-.hero {
+* --- HERO background visible in both themes --- */ .hero {
   position: relative;
+  isolation: isolate; /* new stacking context so layers don't fight cursor-glow */
   overflow: hidden;
 }
+
+/* Background image sits behind blobs + content */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1; /* behind hero content and blobs */
+  z-index: 0; /* now above the page backdrop / cursor-glow */
+  pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(7,9,14,.50), rgba(7,9,14,.60)), /* legibility */
-    url("files/background1.jpg") center/cover no-repeat;
-  background-attachment: fixed; /* optional parallax feel; remove if not wanted */
+    /* subtle legibility glaze for DARK mode */ linear-gradient(
+      180deg,
+      rgba(7, 9, 14, 0.35),
+      rgba(7, 9, 14, 0.45)
+    ),
+    url("files/hero_bg.jpg") center/cover no-repeat;
+  /* remove if you don't want parallax; mobile browsers often ignore fixed */
+  /* background-attachment: fixed; */
+}
+
+/* Light mode uses a lighter glaze so the image still shows */
+:root.light .hero::before {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18),
+      rgba(0, 0, 0, 0.12)
+    ),
+    url("files/hero_bg.jpg") center/cover no-repeat;
+}
+
+/* Put the blob layer above the bg image, below content */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   pointer-events: none;
 }
 
-/* Light theme variant (optional) */
-:root.light .hero::before {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.25)),
-    url("files/background1.jpg") center/cover no-repeat;
-}
-
-/* Your base blob should NOT set an image or inset:0 — let variants position them */
-.hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+/* Keep blobs as color glows only (no image here) */
 .hero__bg .blob {
   position: absolute;
   filter: blur(40px);
   opacity: 0.6;
+}
+
+/* Ensure hero content is on top */
+.hero__inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* Shared “background image behind content” pattern */
+.section {
+  position: relative;
+  isolation: isolate; /* ensures this section layers above page backdrops */
+  overflow: hidden;
+}
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* above page backdrops, below content */
+  pointer-events: none;
+  background:
+    /* dark legibility glaze */ linear-gradient(
+      180deg,
+      rgba(7, 9, 14, 0.55),
+      rgba(7, 9, 14, 0.55)
+    ),
+    var(--section-bg, none) center/cover no-repeat;
+  opacity: 0.9;
+}
+
+/* Light theme: lighter glaze so the image still shows */
+:root.light .section::before {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0.25)
+    ),
+    var(--section-bg, none) center/cover no-repeat;
+}
+
+/* Optional mild parallax (turn off if you prefer static) */
+@media (min-width: 900px) {
+  .section::before {
+    background-attachment: fixed;
+  }
+}
+
+/* Per-section images */
+.bg-skills {
+  --section-bg: url("files/skills_bg.png");
+}
+.bg-experience {
+  --section-bg: url("files/experience_bg.jpg");
+}
+.bg-contact {
+  --section-bg: url("files/contact_bg.jpg");
+}
+.metric-bar {
+  height: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #23d6f0, #6e5aff);
+  width: 30%; /* adjust per achievement */
+}
+
+.chip {
+  background: linear-gradient(90deg, #23d6f0, #6e5aff, #23d6f0);
+  background-size: 300%;
+  animation: gradientShift 6s linear infinite;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+/* Make the brand an inline box with a stacking context */
+.brand {
+  position: relative;
+  display: inline-block; /* preserves the same inline flow as before */
+  isolation: isolate;
+}
+
+/* Keep the span for sizing, but hide text visually to let canvas replace it */
+.brand .nav__name {
+  visibility: hidden; /* retains width/height without showing text */
+  white-space: nowrap; /* same as before to keep width stable */
+}
+
+/* Canvas overlays exactly on top of the span area, never blocks clicks */
+.brand-fx {
+  position: absolute;
+  inset: 0; /* match span box */
+  pointer-events: none; /* don’t block the link */
+  display: block;
+}
+
+/* Respect users who prefer less motion (we’re static anyway, but just in case) */
+@media (prefers-reduced-motion: reduce) {
+  .brand-fx {
+    opacity: 1;
+  }
 }
