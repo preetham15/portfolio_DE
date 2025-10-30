@@ -116,9 +116,16 @@ a {
 }
 .hero__bg .blob {
   position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* optional dark overlay for legibility */
+    linear-gradient(180deg, rgba(7,9,14,.55), rgba(7,9,14,.65)),
+    /* your image */
+    url("files/background1.jpg") center/cover no-repeat;
+  pointer-events: none;
   filter: blur(40px);
   opacity: 0.6;
-  z-index: -1;
 }
 .blob--a {
   top: -120px;
