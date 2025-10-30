@@ -660,3 +660,77 @@ html.dark .map-embed {
 .copy-btn {
   margin-left: 8px;
 }
+/* ===== Hero Art Styling ===== */
+.hero-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--ink);
+  opacity: 0.55;
+  mix-blend-mode: lighten; /* keeps it subtle on dark */
+  z-index: -1;
+}
+
+/* line chart behind avatar */
+.hero-line {
+  stroke: var(--brand);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 10;
+  filter: drop-shadow(0 0 8px rgba(94,234,255,0.25));
+  animation: dashFlow 7s linear infinite;
+}
+
+/* orbiting icons positions are driven by CSS variables */
+.orb,
+.ring {
+  transform-origin: 600px 300px;
+}
+
+/* three separate orbits with different radii/speeds */
+.orb--sport { --rX: 430; --rY: 220; --speed: 24s; }
+.orb--med   { --rX: 300; --rY: 150; --speed: 18s; }
+.orb--fin   { --rX: 360; --rY: 180; --speed: 28s; }
+
+/* actual orbital motion (parametric ellipse) */
+.orb {
+  animation: orbit var(--speed) linear infinite;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+  opacity: 0.95;
+}
+.orb use {
+  transform: translate(-28px, -28px); /* center icon on its path */
+}
+
+/* rings slow rotate for a subtle parallax */
+.ring--outer { animation: spin 120s linear infinite; opacity: 0.22; }
+.ring--inner { animation: spin 90s linear reverse infinite; opacity: 0.25; }
+
+/* Keyframes */
+@keyframes dashFlow {
+  to { stroke-dashoffset: -220; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* parametric orbit via CSS variables + trigonometry approximated with animate() trick
+   We’ll simulate with rotate + translate for perf + simplicity */
+@keyframes orbit {
+  0%   { transform: rotate(0deg) translate(var(--rX), 0) rotate(0deg); }
+  25%  { transform: rotate(90deg) translate(var(--rY), 0) rotate(-90deg); }
+  50%  { transform: rotate(180deg) translate(var(--rX), 0) rotate(-180deg); }
+  75%  { transform: rotate(270deg) translate(var(--rY), 0) rotate(-270deg); }
+  100% { transform: rotate(360deg) translate(var(--rX), 0) rotate(-360deg); }
+}
+
+/* Make it more subtle in light mode */
+:root.light .hero-art { opacity: 0.45; mix-blend-mode: multiply; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-art, .orb, .ring, .hero-line {
+    animation: none !important;
+  }
+}
