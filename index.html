@@ -322,12 +322,9 @@
       <div class="container nav__inner nav__grid">
         <!-- LEFT: name + avatar -->
         <div class="nav__left nav__profile">
-          <img src="files/logo.png" alt="Preetham Challa" class="nav__avatar" />
-          <a href="#home" class="brand" aria-label="Preetham Challa — Home">
+          <a href="#home">
             <!-- Keeps layout size; hidden visually but readable to screen readers -->
             <span class="nav__name" id="brandText">Preetham Challa</span>
-            <!-- Effect canvas sits on top, same size as the span -->
-            <canvas id="brandFx" class="brand-fx" aria-hidden="true"></canvas>
           </a>
         </div>
         <!-- CENTER: links -->
@@ -358,12 +355,7 @@
         <div class="blob blob--a"></div>
         <div class="blob blob--b"></div>
       </div>
-      <!-- Particle canvas (sits between bg image/blobs and content) -->
-      <canvas
-        id="heroParticles"
-        class="hero-canvas"
-        aria-hidden="true"
-      ></canvas>
+
       <div class="container hero__inner reveal">
         <div class="hero__avatar" aria-hidden="true">
           <div class="avatar-3d">
@@ -401,6 +393,8 @@
           <a class="pill" href="mailto:preethamch1503@gmail.com">Email</a>
           <a class="pill" href="#contact">Contact</a>
         </div>
+        <!-- put this inside .hero__inner (or your hero wrapper) -->
+        <div id="brickPlayground" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -1142,126 +1136,224 @@
           }
         });
       })();
-      (function brandParticlesStatic() {
-        const span = document.getElementById("brandText");
-        const canvas = document.getElementById("brandFx");
-        if (!span || !canvas) return;
-        const ctx = canvas.getContext("2d", { alpha: true });
-        const dpr = Math.max(1, window.devicePixelRatio || 1);
 
-        // Tunables (keep subtle for nav)
-        const GAP = 3; // sampling grid (bigger = fewer dots)
-        const DOT = 1.3; // dot radius
-        const PADX = 0; // optional extra left/right padding inside canvas
+      (() => {
+        const MAX_BRICKS = 20;
+        const GRAVITY = 0.55; // visible fall acceleration (px / frame^2)
+        const BOUNCE = 0.08; // tiny bounce on land
+        const FLOOR_PAD = 8; // space above “floor”
+        const SPAWN_MS = 700; // cadence of rain (visible to the eye)
 
-        function colors() {
-          const cs = getComputedStyle(document.documentElement);
-          return {
-            brand: cs.getPropertyValue("--brand").trim() || "#5eeaff",
-            brand2: cs.getPropertyValue("--brand-2").trim() || "#6d58ff",
-            ink: cs.getPropertyValue("--ink").trim() || "#ffffff",
+        const pg = document.getElementById("brickPlayground");
+        if (!pg) return;
+
+        // ensure the hero wrapper can anchor abs children
+        const hero = document.querySelector(".hero__inner");
+        if (hero && getComputedStyle(hero).position === "static") {
+          hero.style.position = "relative";
+        }
+
+        const bricks = new Set();
+        let animId = null;
+        let rainTimer = null;
+
+        // utils
+        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+        // create a brick that starts just under the nav (i.e., above the playground top)
+        function makeBrick(x) {
+          if (bricks.size >= MAX_BRICKS) return;
+
+          const el = document.createElement("div");
+          el.className = "brick";
+          el.textContent = "OPEN TO WORK";
+          pg.appendChild(el);
+
+          const pgRect = pg.getBoundingClientRect();
+          const rect = el.getBoundingClientRect();
+
+          const state = {
+            el,
+            x: clamp(
+              x ?? Math.random() * (pgRect.width - rect.width),
+              0,
+              pgRect.width - rect.width
+            ),
+            y: -60, // “below the nav bar” visually
+            vx: (Math.random() * 2 - 1) * 0.8, // slight horizontal drift as it falls
+            vy: 1 + Math.random() * 2, // initial downward speed
+            resting: false,
+            dragging: false,
+            w: rect.width,
+            h: rect.height,
           };
+          bricks.add(state);
+          place(state);
+          enableDrag(state);
+          runLoop();
         }
 
-        function lerpColor(a, b, t) {
-          function hexToRgb(h) {
-            const s = h.replace("#", "");
-            const n =
-              s.length === 3
-                ? s
-                    .split("")
-                    .map((x) => x + x)
-                    .join("")
-                : s;
-            return {
-              r: parseInt(n.slice(0, 2), 16),
-              g: parseInt(n.slice(2, 4), 16),
-              b: parseInt(n.slice(4, 6), 16),
-            };
-          }
-          try {
-            const A = hexToRgb(a),
-              B = hexToRgb(b);
-            const r = Math.round(A.r + (B.r - A.r) * t),
-              g = Math.round(A.g + (B.g - A.g) * t),
-              b2 = Math.round(A.b + (B.b - A.b) * t);
-            return `rgb(${r},${g},${b2})`;
-          } catch {
-            return a;
-          }
+        function place(b) {
+          b.el.style.left = b.x + "px";
+          b.el.style.top = b.y + "px";
         }
 
-        function fitCanvasToSpan() {
-          // Measure the hidden text box (it’s visible: hidden so size is real)
-          const r = span.getBoundingClientRect();
-          const W = Math.max(10, Math.floor(r.width));
-          const H = Math.max(10, Math.floor(r.height));
-          canvas.style.width = W + "px";
-          canvas.style.height = H + "px";
-          canvas.width = Math.floor((W + PADX * 2) * dpr);
-          canvas.height = Math.floor(H * dpr);
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          return { W, H };
-        }
+        function physicsStep() {
+          const pgRect = pg.getBoundingClientRect();
 
-        function drawStatic() {
-          const { W, H } = fitCanvasToSpan();
-          const { brand, brand2 } = colors();
+          bricks.forEach((b) => {
+            if (b.dragging) return;
 
-          // Render the original text to an offscreen canvas (to sample pixels)
-          const off = document.createElement("canvas");
-          off.width = W;
-          off.height = H;
-          const o = off.getContext("2d");
-          o.clearRect(0, 0, W, H);
+            if (!b.resting) {
+              // integrate motion
+              b.vy += GRAVITY;
+              b.x += b.vx;
+              b.y += b.vy;
 
-          // Use the *computed* font of the span so it matches your nav styling
-          const cs = getComputedStyle(span);
-          const font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-          o.font = font;
-          o.textAlign = "left";
-          o.textBaseline = "top";
-
-          // Ensure we draw exactly where the span’s text would be
-          // (Using line-height to center vertically if needed)
-          const lineHeight = parseFloat(cs.lineHeight) || H;
-          const y = (H - parseFloat(cs.fontSize)) * 0.5; // approx vertical align
-          o.fillStyle = "#fff";
-          o.fillText(span.textContent.trim(), 0, Math.max(0, y));
-
-          // Sample opaque pixels and paint dots on the visible canvas
-          const id = o.getImageData(0, 0, W, H).data;
-          ctx.clearRect(0, 0, W + PADX * 2, H);
-
-          let i = 0;
-          for (let y = 0; y < H; y += GAP) {
-            for (let x = 0; x < W; x += GAP) {
-              const a = id[(y * W + x) * 4 + 3];
-              if (a > 128) {
-                const t = (i++ % W) / Math.max(1, W - 1); // simple gradient across width
-                ctx.fillStyle = lerpColor(brand, brand2, t);
-                ctx.beginPath();
-                ctx.arc(x + PADX, y, DOT, 0, Math.PI * 2);
-                ctx.fill();
+              // walls
+              if (b.x <= 0) {
+                b.x = 0;
+                b.vx = -b.vx * 0.6;
               }
+              if (b.x + b.w >= pgRect.width) {
+                b.x = pgRect.width - b.w;
+                b.vx = -b.vx * 0.6;
+              }
+
+              // floor
+              const floorY = pgRect.height - b.h - FLOOR_PAD;
+              if (b.y >= floorY) {
+                b.y = floorY;
+                b.vy = -b.vy * BOUNCE;
+                if (Math.abs(b.vy) < 0.9) {
+                  b.vy = 0;
+                  b.vx *= 0.95;
+                  b.resting = true;
+                }
+              }
+
+              // simple AABB-on-top stacking with settled/other bricks
+              bricks.forEach((o) => {
+                if (o === b || o.dragging) return;
+                const overlap =
+                  b.x < o.x + o.w &&
+                  b.x + b.w > o.x &&
+                  b.y < o.y + o.h &&
+                  b.y + b.h > o.y;
+
+                // if colliding while moving down, land on top
+                if (overlap && b.vy > 0) {
+                  b.y = o.y - b.h;
+                  b.vy = -b.vy * BOUNCE;
+                  if (Math.abs(b.vy) < 0.9) {
+                    b.vy = 0;
+                    b.vx *= 0.92;
+                    b.resting = true;
+                  }
+                }
+              });
+
+              place(b);
+            } else {
+              // friction to settle horizontally a touch
+              b.vx *= 0.98;
+              b.x = clamp(b.x + b.vx, 0, pgRect.width - b.w);
+              place(b);
             }
-          }
+          });
         }
 
-        // Initial draw
-        drawStatic();
+        function runLoop() {
+          if (animId) return;
+          const tick = () => {
+            physicsStep();
+            animId = bricks.size ? requestAnimationFrame(tick) : null;
+          };
+          animId = requestAnimationFrame(tick);
+        }
 
-        // Redraw on resize (debounced) and theme toggle (colors change)
-        let to;
+        function enableDrag(b) {
+          const el = b.el;
+          let startX = 0,
+            startY = 0,
+            originX = 0,
+            originY = 0;
+
+          const down = (e) => {
+            b.dragging = true;
+            b.resting = false;
+            b.vx = 0;
+            b.vy = 0;
+
+            const p = e.touches ? e.touches[0] : e;
+            startX = p.clientX;
+            startY = p.clientY;
+            originX = b.x;
+            originY = b.y;
+
+            document.addEventListener("mousemove", move);
+            document.addEventListener("touchmove", move, { passive: false });
+            document.addEventListener("mouseup", up, { once: true });
+            document.addEventListener("touchend", up, { once: true });
+          };
+
+          const move = (e) => {
+            const p = e.touches ? e.touches[0] : e;
+            const dx = p.clientX - startX;
+            const dy = p.clientY - startY;
+
+            const pgRect = pg.getBoundingClientRect();
+            b.x = clamp(originX + dx, 0, pgRect.width - b.w);
+            b.y = clamp(originY + dy, -60, pgRect.height - b.h - FLOOR_PAD);
+            place(b);
+            e.preventDefault?.();
+          };
+
+          const up = () => {
+            document.removeEventListener("mousemove", move);
+            document.removeEventListener("touchmove", move);
+            b.dragging = false;
+            // let it fall again from the new position
+            b.vy = 0;
+            b.vx = 0;
+          };
+
+          el.addEventListener("mousedown", down);
+          el.addEventListener("touchstart", down, { passive: true });
+        }
+
+        // auto-rain on load/reload (no controls)
+        function startRain() {
+          if (rainTimer) return;
+          rainTimer = setInterval(() => {
+            if (bricks.size >= MAX_BRICKS) {
+              stopRain();
+              return;
+            }
+            const pgRect = pg.getBoundingClientRect();
+            makeBrick(Math.random() * (pgRect.width - 160));
+          }, SPAWN_MS);
+        }
+        function stopRain() {
+          clearInterval(rainTimer);
+          rainTimer = null;
+        }
+
+        // seed a couple instantly so a stack is visible right away
+        for (let i = 0; i < 3; i++) makeBrick();
+
+        // start the rain automatically
+        startRain();
+
+        // keep bricks bounded on resize
         window.addEventListener("resize", () => {
-          clearTimeout(to);
-          to = setTimeout(drawStatic, 120);
-        });
-        document
-          .getElementById("themeToggle")
-          ?.addEventListener("click", () => {
-            setTimeout(drawStatic, 0);
+          const pgRect = pg.getBoundingClientRect();
+          bricks.forEach((b) => {
+            b.x = clamp(b.x, 0, pgRect.width - b.w);
+            b.y = clamp(b.y, -60, pgRect.height - b.h - FLOOR_PAD);
+            place(b);
           });
+        });
       })();
     </script>
   </body>

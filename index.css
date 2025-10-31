@@ -771,45 +771,46 @@ html.dark .map-embed {
 .bg-contact {
   --section-bg: url("files/contact_bg.jpg");
 }
-.metric-bar {
-  height: 4px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #23d6f0, #6e5aff);
-  width: 30%; /* adjust per achievement */
-}
-
-.chip {
-  background: linear-gradient(90deg, #23d6f0, #6e5aff, #23d6f0);
-  background-size: 300%;
-  animation: gradientShift 6s linear infinite;
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 600;
-}
-/* Make the brand an inline box with a stacking context */
-.brand {
+/* playground inside the hero */
+#brickPlayground {
   position: relative;
-  display: inline-block; /* preserves the same inline flow as before */
-  isolation: isolate;
+  width: 100%;
+  height: clamp(360px, 58vh, 640px); /* tune to your hero height */
+  margin-top: 0.75rem;
+  overflow: hidden; /* keep bricks inside */
+  background: transparent; /* your hero bg stays visible */
 }
 
-/* Keep the span for sizing, but hide text visually to let canvas replace it */
-.brand .nav__name {
-  visibility: hidden; /* retains width/height without showing text */
-  white-space: nowrap; /* same as before to keep width stable */
-}
-
-/* Canvas overlays exactly on top of the span area, never blocks clicks */
-.brand-fx {
+/* plain “brick” block */
+.brick {
   position: absolute;
-  inset: 0; /* match span box */
-  pointer-events: none; /* don’t block the link */
-  display: block;
+  width: 150px;
+  height: 42px; /* simple brick */
+  background: linear-gradient(#e6edf5, #cfd9e6);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 0.82rem/1 system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  color: #2b2f36;
+  user-select: none;
+  cursor: grab;
+  pointer-events: auto;
+}
+.brick:active {
+  cursor: grabbing;
 }
 
-/* Respect users who prefer less motion (we’re static anyway, but just in case) */
-@media (prefers-reduced-motion: reduce) {
-  .brand-fx {
-    opacity: 1;
-  }
+body.dark-mode .brick {
+  background: linear-gradient(#2b3140, #1f2531);
+  color: #eaf1ff;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* make sure hero can position children if it wasn't already */
+.hero__inner {
+  position: relative;
 }
